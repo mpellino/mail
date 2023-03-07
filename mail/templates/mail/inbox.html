@@ -11,16 +11,19 @@
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
     <hr>
 
-    <div id="emails-view">
+    <div id="emails-view" data-view-id="emails">
+    <h3>Emails</h3>
     </div>
 
-    <div id="sent-view">
+    <div id="sent-view" data-view-id="sent">
+    <h3>sent</h3>
     </div>
 
-    <div id="archived-view">
+    <div id="archived-view" data-view-id="archive">
+    <h3>archive</h3>
     </div>
 
-    <div id="compose-view">
+    <div id="compose-view" data-view-id="compose">
         <h3>New Email</h3>
         <form id="compose-form">
             <div class="form-group">

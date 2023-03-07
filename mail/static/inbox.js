@@ -52,10 +52,35 @@ function load_mailbox(mailbox) {
   // ,maybe it would be good to add a class to the different view to select them all at the same time and then use the id
   // to choose the appropriate  on
 
+  //style display none to all the mail views
+  const views = document.querySelectorAll("[data-view-id]")
+
+  views.forEach(view => {
+    view.style.display = 'none'
+    console.log("test")
+  })
+  switch (mailbox) {
+  case "inbox":
+    document.querySelector('#emails-view').style.display = 'block';
+    console.log(mailbox)
+    break;
+  case "sent":
+    document.querySelector('#sent-view').style.display = 'block';
+    console.log(mailbox)
+    break;
+  case "archive":
+    document.querySelector('#archived-view').style.display = 'block';
+    console.log(mailbox)
+    break;
+  default:
+    document.querySelector('#emails-view').style.display = 'block';
+    break;
+}
+
 
   // Show the mailbox and hide other views
-  document.querySelector('#emails-view').style.display = 'block';
-  document.querySelector('#compose-view').style.display = 'none';
+  //document.querySelector('#emails-view').style.display = 'block';
+  //document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`}
