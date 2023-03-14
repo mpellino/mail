@@ -27,15 +27,20 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(result => {
           // Print result
-          console.log(result);
+          //console.log(result);
       });
   }
 
 });
 
 function compose_email() {
+  console.log("compose_email")
   // Show compose view and hide other views
-  document.querySelector('#emails-view').style.display = 'none';
+  const views = document.querySelectorAll("[data-view-id]")
+  views.forEach(view => {
+    view.style.display = 'none'
+    console.log("test_none")
+  })
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
@@ -56,21 +61,21 @@ function load_mailbox(mailbox) {
 
   views.forEach(view => {
     view.style.display = 'none'
-    console.log("test")
+    console.log("view_deleted")
   })
   switch (mailbox) {
   case "inbox":
     document.querySelector('#emails-view').style.display = 'block';
-    console.log(mailbox);
+    //console.log(mailbox);
     break;
   case "sent":
     document.querySelector('#sent-view').style.display = 'block';
-    console.log(mailbox)
+    //console.log(mailbox)
     get_emails()
     break;
   case "archive":
     document.querySelector('#archived-view').style.display = 'block';
-    console.log(mailbox)
+    //console.log(mailbox)
     break;
   default:
     document.querySelector('#emails-view').style.display = 'block';
@@ -83,7 +88,7 @@ function load_mailbox(mailbox) {
   //document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`}
+  document.querySelector('#emails-view').innerHTML = `<h2>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h2>`}
 
 
 //Function to get the emails from the server
@@ -91,27 +96,27 @@ function get_emails(){
   fetch('/emails/sent')
   .then(response => response.json())
   .then(emails => {
-      // Print emails
-      console.log(emails);
+      const email_list = document.querySelector('#sent-view')
+      while (email_list.hasChildNodes()) {
+        email_list.removeChild(email_list.firstChild);
+        console.log("deleting child")
+      }
       //make a loop to display the emails
         emails.forEach(email => {
           const email_div = document.createElement('div')
           email_div.classList.add('email-container')
-          const email_subject = document.createElement('h2')
+          const email_subject = document.createElement('h3')
           email_subject.innerHTML = email.subject
-          const email_sender = document.createElement('h3')
-          email_sender.innerHTML = email.sender
-          const email_body = document.createElement('p')
-          email_body.innerHTML = email.body
+          const email_sender = document.createElement('p')
+          email_sender.innerHTML = `FROM: ${email.sender}`
+          const email_timestamp = document.createElement('p')
+          email_timestamp.innerHTML = `TIMESTAMP: ${email.timestamp}`
 
-          email_div.appendChild(email_subject)
           email_div.appendChild(email_sender)
-          email_div.appendChild(email_body)
+          email_div.appendChild(email_subject)
+          email_div.appendChild(email_timestamp)
 
           document.querySelector('#sent-view').append(email_div)
         })
-
-
-      // ... do something else with emails ...
   });
 }
