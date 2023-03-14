@@ -111,12 +111,29 @@ function get_emails(){
           email_sender.innerHTML = `FROM: ${email.sender}`
           const email_timestamp = document.createElement('p')
           email_timestamp.innerHTML = `TIMESTAMP: ${email.timestamp}`
+          const email_id = document.createElement('p')
+          email_id.innerHTML = `email_Id: ${email.id}`
 
           email_div.appendChild(email_sender)
           email_div.appendChild(email_subject)
           email_div.appendChild(email_timestamp)
+          email_div.appendChild(email_id)
 
           document.querySelector('#sent-view').append(email_div)
+
+          // Add click event listener to email div
+          email_div.addEventListener('click', () => getEmailContent(email.id))
+
         })
   });
+}
+
+function getEmailContent(emailId) {
+  fetch(`/emails/${emailId}`)
+    .then(response => response.json())
+    .then(email => {
+      // Display email content
+      console.log(email);
+    })
+    .catch(error => console.log(error));
 }
