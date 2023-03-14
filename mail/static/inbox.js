@@ -46,7 +46,6 @@ function compose_email() {
 
 function load_mailbox(mailbox) {
 
-  // TODO:
   // document select all the  views and make them style.display = none,
   // use switch to check what button was pressed and change stile display of the appropriate id to block.
   // ,maybe it would be good to add a class to the different view to select them all at the same time and then use the id
@@ -62,11 +61,12 @@ function load_mailbox(mailbox) {
   switch (mailbox) {
   case "inbox":
     document.querySelector('#emails-view').style.display = 'block';
-    console.log(mailbox)
+    console.log(mailbox);
     break;
   case "sent":
     document.querySelector('#sent-view').style.display = 'block';
     console.log(mailbox)
+    get_emails()
     break;
   case "archive":
     document.querySelector('#archived-view').style.display = 'block';
@@ -84,3 +84,34 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`}
+
+
+//Function to get the emails from the server
+function get_emails(){
+  fetch('/emails/sent')
+  .then(response => response.json())
+  .then(emails => {
+      // Print emails
+      console.log(emails);
+      //make a loop to display the emails
+        emails.forEach(email => {
+          const email_div = document.createElement('div')
+          email_div.classList.add('email-container')
+          const email_subject = document.createElement('h2')
+          email_subject.innerHTML = email.subject
+          const email_sender = document.createElement('h3')
+          email_sender.innerHTML = email.sender
+          const email_body = document.createElement('p')
+          email_body.innerHTML = email.body
+
+          email_div.appendChild(email_subject)
+          email_div.appendChild(email_sender)
+          email_div.appendChild(email_body)
+
+          document.querySelector('#sent-view').append(email_div)
+        })
+
+
+      // ... do something else with emails ...
+  });
+}
